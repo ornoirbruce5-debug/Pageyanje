@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeune Boutique — Digital Boutique</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="light">
+  <!-- Header -->
+  <header class="topbar">
+    <div class="logo">Jeune Boutique ✨</div>
+    <nav class="nav">
+      <a href="#hero">Home</a>
+      <a href="#stock">Stock</a>
+      <a href="#feedback">Testimonials</a>
+      <a href="#chatbot">Chatbot</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="darkToggle">🌙</button>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/video.mp4" type="video/mp4">
+      </video>
+      <img src="assets/fallback.jpg" alt="Background">
+    </div>
+    <div class="hero-content">
+      <h1>Dushorere kugiciro gito</h1>
+      <p class="subtitle">Digital dropshipping media boutique 🌸</p>
+      <audio controls>
+        <source src="assets/snippet-fr.mp3" type="audio/mpeg">
+      </audio>
+      <a href="stock.html" class="cta">Raba stock yose 🛒</a>
+    </div>
+  </section>
+
+  <!-- Stock preview -->
+  <section id="stock" class="section">
+    <h2>Stock yacu</h2>
+    <div id="productsGrid" class="products-grid"></div>
+    <div class="center">
+      <a href="stock.html" class="button">Raba stock yose 🛒</a>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="feedback" class="section">
+    <h2>Testimonials</h2>
+    <div class="testimonials">
+      <article class="testimonial card">
+        <p>“Service ni fresh kandi vuba! 🌸”</p>
+        <div class="stars">★★★★★</div>
+      </article>
+      <article class="testimonial card">
+        <p>“Chatbot ifasha gushakisha ibintu vyihuse 🎉”</p>
+        <div class="stars">★★★★☆</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Daily Joke -->
+  <section id="joke" class="section">
+    <h2>Daily Joke 🌀</h2>
+    <div id="dailyJoke" class="card"></div>
+    <button id="spinJoke" class="button">Fata Joke y’umunsi</button>
+  </section>
+
+  <!-- Chatbot -->
+  <section id="chatbot" class="section">
+    <h2>Supermarket Chatbot Assistant</h2>
+    <div class="chatbot-wrap card">
+      <div id="chatWindow" class="chat-window"></div>
+      <div class="chat-controls">
+        <input id="chatInput" type="text" placeholder="Andika: 'amakuru', 'ndashaka amata'…" />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google Maps -->
+  <section id="map" class="section">
+    <h2>Location: Gihosha</h2>
+    <iframe width="100%" height="360"
+      src="https://maps.google.com/maps?q=-3.3648611,29.3889082&z=15&output=embed">
+    </iframe>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <h2>Twandikire</h2>
+    <form action="https://formsubmit.co/ornoirbruce5@gmail.com" method="POST" class="contact card">
+      <input type="text" name="name" placeholder="Izina" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <button type="submit" class="button">Ohereza 💌</button>
+    </form>
+  </section>
+
+  <!-- WhatsApp -->
+  <section class="section">
+    <h2>WhatsApp support</h2>
+    <a class="button" href="https://wa.me/25771633859" target="_blank">Twandikire kuri WhatsApp</a>
+    <img src="assets/whatsapp-qr.jpg" alt="WhatsApp QR" width="120">
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>📞 +25771633859 | 📧 ornoirbruce5@gmail.com | 📍 Gihosha</p>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
