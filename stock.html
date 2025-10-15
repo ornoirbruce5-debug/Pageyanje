@@ -5,33 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stock yose — Jeune Boutique</title>
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 🌙 Dark mode toggle
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('jb_dark', document.body.classList.contains('dark'));
+    }
+    window.onload = () => {
+      if (localStorage.getItem('jb_dark') === 'true') {
+        document.body.classList.add('dark');
+      }
+    };
+  </script>
 </head>
 <body>
-  <header>
+  <!-- 🌙 Toggle -->
+  <button onclick="toggleDark()" class="dark-toggle">🌙/☀️</button>
+
+  <!-- 🛒 Floating Cart -->
+  <a href="cart.html" class="floating-cart">🛒</a>
+
+  <!-- 🔝 Header -->
+  <header class="topbar">
     <div class="logo">Jeune Boutique ✨</div>
     <nav>
       <a href="index.html">🏠 Home</a>
-    </nav>
-  </header>
+    
 
-  <section id="stock">
-    <h2>Stock yose 🌸</h2>
-    <input id="searchBar" type="text" placeholder="🔍 Shakisha ibicuruzwa…" />
+  <!-- 🧃 Main content -->
+  <main class="section">
+    <h1>🛍️ Stock yose</h1>
+
+    <!-- 🔍 Search -->
+    <input id="searchBar" type="text" placeholder="🔍 Shakisha ibicuruzwa…" class="search-input" />
+
+    <!-- 🧃 Filters -->
     <div class="filters">
       <button data-cat="all" class="filter-btn active">Byose</button>
       <button data-cat="amata" class="filter-btn">Amata</button>
-      <button data-cat="Ibinyobwa" class="filter-btn">Ibinyobwa</button>
+      <button data-cat="ibinyobwa" class="filter-btn">Ibinyobwa</button>
       <button data-cat="isuku" class="filter-btn">Isuku</button>
     </div>
-    <div id="productsGrid" class="products-grid"></div>
-    <div id="pagination" class="pagination"></div>
-  </section>
 
-  <footer>
-    &copy; 2025 Jeune Boutique — Made with 💖
+    <!-- 📦 Products -->
+    <div id="productsGrid" class="products-grid"></div>
+
+    <!-- 📄 Pagination -->
+    <div id="pagination" class="pagination"></div>
+
+    <!-- 📱 WhatsApp QR -->
+    <section class="whatsapp-section">
+      <h2>📞 Twandikire kuri WhatsApp</h2>
+      <img src="whatsapp-qr.jpg" alt="Scan QR to chat" class="qr-code">
+      <p>
+        Cyangwa <a href="https://wa.me/257XXXXXXXX?text=Mwaramutse%20Jeune%20Boutique%2C%20ndifuza%20kumenya%20ibicuruzwa%20mufite%20uyu%20munsi%20😊" target="_blank">
+          kanda hano kugira ngo utangire ikiganiro
+        </a> 💬
+      </p>
+    </section>
+  </main>
+
+  <!-- 👣 Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Jeune Boutique — Made with 💖 in Gihosha</p>
   </footer>
 
+  <!-- ✅ Products tag -->
   <script src="js/products.js"></script>
+
+  <!-- 🧠 Logic -->
   <script>
     const grid = document.getElementById('productsGrid');
     const searchBar = document.getElementById('searchBar');
@@ -42,11 +84,18 @@
     const perPage = 12;
     let currentList = JB_PRODUCTS;
 
+    function addToCart(id){
+      const cart = JSON.parse(localStorage.getItem('jb_cart') || '[]');
+      cart.push(id);
+      localStorage.setItem('jb_cart', JSON.stringify(cart));
+      alert('Yongewe mu gare 🛒');
+    }
+
     function renderProducts(list){
-      const frag = document.createDocumentFragment();
+      grid.innerHTML = '';
       list.forEach(p => {
         const card = document.createElement('article');
-        card.className = 'product';
+        card.className = 'product card';
         card.innerHTML = `
           <img src="${p.image}" alt="${p.name}" loading="lazy">
           <h3>${p.name}</h3>
@@ -58,10 +107,8 @@
           <button class="button">Fata 🛒</button>
         `;
         card.querySelector('button').addEventListener('click', ()=> addToCart(p.id));
-        frag.appendChild(card);
+        grid.appendChild(card);
       });
-      grid.innerHTML = '';
-      grid.appendChild(frag);
     }
 
     function renderPage(list, page){
@@ -83,44 +130,24 @@
       }
     }
 
-    function addToCart(id){
-      const item = JB_PRODUCTS.find(p => p.id === id);
-      if (!item) return;
-      const cart = JSON.parse(localStorage.getItem('jb_cart') || '[]');
-      cart.push({ id: item.id, name: item.name, price: item.price, qty: 1 });
-      localStorage.setItem('jb_cart', JSON.stringify(cart));
-      alert(`💖 Ongereje ${item.name} mu igare 🛒`);
-    }
-
-    // Search
-    searchBar.addEventListener('input', () => {
-      const q = searchBar.value.toLowerCase();
-      currentList = JB_PRODUCTS.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q)
-      );
+    searchBar.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      currentList = JB_PRODUCTS.filter(p => p.name.toLowerCase().includes(q));
       currentPage = 1;
       renderPage(currentList, currentPage);
     });
 
-    // Filters
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const cat = btn.dataset.cat;
-        if (cat === 'all') {
-          currentList = JB_PRODUCTS;
-        } else {
-          currentList = JB_PRODUCTS.filter(p => p.category.toLowerCase() === cat.toLowerCase());
-        }
+        currentList = cat === 'all' ? JB_PRODUCTS : JB_PRODUCTS.filter(p => p.category === cat);
         currentPage = 1;
         renderPage(currentList, currentPage);
       });
     });
 
-    // Initial render
     renderPage(currentList, currentPage);
   </script>
 </body>
