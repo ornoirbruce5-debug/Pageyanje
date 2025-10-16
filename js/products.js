@@ -1,25 +1,184 @@
 // js/products.js
+
 window.JB_PRODUCTS = [
-  { id: 1, name: "Amata ya Mukamu", category: "amata", price: 1800, stock: 24, desc: "Amata meza, fresh ku muhingo.", image: "assets/amata1.jpg" },
-  { id: 2, name: "Amata y'ifu", category: "amata", price: 3200, stock: 12, desc: "Yoroheje kubika, yoroshwa amazi.", image: "assets/amata2.jpg" },
-  { id: 3, name: "Jus d'ananas", category: "Ibinyobwa", price: 1500, stock: 40, desc: "Jus y'ananasi ishaririza neza.", image: "assets/jus1.jpg" },
-  { id: 4, name: "Soda Cola 50cl", category: "Ibinyobwa", price: 1200, stock: 60, desc: "Soda ishushe ku bukonje.", image: "assets/soda1.jpg" },
-  { id: 5, name: "Savon Isuku", category: "isuku", price: 900, stock: 70, desc: "Isabune y'indimu, ihumura neza.", image: "assets/savon1.jpg" },
-  { id: 6, name: "Serviettes Soft", category: "isuku", price: 2100, stock: 25, desc: "Papier doux, umwumbati.", image: "assets/serviettes.jpg" }
-];
-
-// Scale to 100+ by appending; keep images lazy and debounce search in chatbot.
-
-// Predefined bundles
-window.JB_BUNDLES = {
-  "Isuku Starter": { ids: [5, 6], bundlePrice: 2800 },
-  "Ibinyobwa Mini": { ids: [3, 4], bundlePrice: 2400 }
-};
-
-// Light tips/jokes set for daily spinner
-window.JB_JOKES_RW = [
-  "Umudandaza w’amatunda yasavye kugabanyirizwa, bamubwira ngo: ureke kugura urye akaryoshye! 😊",
-  "Ugiye gusuma ku isoko: ntujane inzara nyinshi, izagutwara budget! 🌸",
-  "Amata meza araryoha, ariko n’urukundo rw’umukiriya ruryoshya kurusha! 💙",
-  "Iyo ufise igare ryuzuye, umutima wuzura akanyamuneza 🎉"
+  {
+    id: 1,
+    name: "Amata ya Mukamu",
+    category: "amata",
+    price: 1800,
+    stock: 24,
+    desc: "Amata meza, fresh ku muhingo.",
+    image: "assets/amata1.jpg"
+  },
+  {
+    id: 2,
+    name: "Amata y'ifu",
+    category: "amata",
+    price: 3200,
+    stock: 12,
+    desc: "Yoroheje kubika, yoroshwa amazi.",
+    image: "assets/amata2.jpg"
+  },
+  {
+    id: 3,
+    name: "Jus d'ananas",
+    category: "ibinyobwa",
+    price: 1500,
+    stock: 40,
+    desc: "Jus y'ananasi ishaririza neza.",
+    image: "assets/jus1.jpg"
+  },
+  {
+    id: 4,
+    name: "Soda Cola 50cl",
+    category: "ibinyobwa",
+    price: 1200,
+    stock: 60,
+    desc: "Soda ishushe ku bukonje.",
+    image: "assets/soda1.jpg"
+  },
+  {
+    id: 5,
+    name: "Savon Isuku",
+    category: "isuku",
+    price: 900,
+    stock: 70,
+    desc: "Isabune y'indimu, ihumura neza.",
+    image: "assets/savon1.jpg"
+  },
+  {
+    id: 6,
+    name: "Serviettes Soft",
+    category: "isuku",
+    price: 2100,
+    stock: 25,
+    desc: "Papier doux, umwumbati.",
+    image: "assets/serviettes.jpg"
+  },
+  {
+    id: 7,
+    name: "Pain Complet",
+    category: "ibifungurwa",
+    price: 1300,
+    stock: 30,
+    desc: "Umutsima wuzuye, wuzuye fibre.",
+    image: "assets/pain.jpg"
+  },
+  {
+    id: 8,
+    name: "Riz Basmati 1kg",
+    category: "ibifungurwa",
+    price: 2900,
+    stock: 50,
+    desc: "Riz yoroheje, iryoshye ku mafunguro.",
+    image: "assets/riz.jpg"
+  },
+  {
+    id: 9,
+    name: "Huile de Tournesol",
+    category: "ibifungurwa",
+    price: 4800,
+    stock: 20,
+    desc: "Amavuta meza yo guteka.",
+    image: "assets/huile.jpg"
+  },
+  {
+    id: 10,
+    name: "Tomates fraîches 1kg",
+    category: "imboga",
+    price: 1500,
+    stock: 35,
+    desc: "Tomates zifasha guteka sauce.",
+    image: "assets/tomates.jpg"
+  },
+  {
+    id: 11,
+    name: "Carottes fraîches 1kg",
+    category: "imboga",
+    price: 1400,
+    stock: 40,
+    desc: "Carottes zifasha salade n’isupu.",
+    image: "assets/carottes.jpg"
+  },
+  {
+    id: 12,
+    name: "Oignons rouges 1kg",
+    category: "imboga",
+    price: 1600,
+    stock: 45,
+    desc: "Ibitunguru bitukura, biryoshye.",
+    image: "assets/oignons.jpg"
+  },
+  {
+    id: 13,
+    name: "Biscuit Chocolat",
+    category: "snacks",
+    price: 800,
+    stock: 100,
+    desc: "Biscuit y'ifu y'isukari n'ibishishwa bya chocolat.",
+    image: "assets/biscuit.jpg"
+  },
+  {
+    id: 14,
+    name: "Chips Nature",
+    category: "snacks",
+    price: 700,
+    stock: 80,
+    desc: "Chips zifite umunyu muke, ziryoshye ku rugendo.",
+    image: "assets/chips.jpg"
+  },
+  {
+    id: 15,
+    name: "Eau Minérale 1L",
+    category: "ibinyobwa",
+    price: 1000,
+    stock: 90,
+    desc: "Amazi meza, atagira gaz, 1L.",
+    image: "assets/eau.jpg"
+  },
+  {
+    id: 16,
+    name: "Lait Corporel",
+    category: "isuku",
+    price: 3500,
+    stock: 18,
+    desc: "Amavuta yo kwisiga, yoroheje uruhu.",
+    image: "assets/lait.jpg"
+  },
+  {
+    id: 17,
+    name: "Crème Visage",
+    category: "isuku",
+    price: 4200,
+    stock: 15,
+    desc: "Crème y’amaso, irinda izuba.",
+    image: "assets/creme.jpg"
+  },
+  {
+    id: 18,
+    name: "Banane douce 1kg",
+    category: "imbuto",
+    price: 1300,
+    stock: 50,
+    desc: "Imineke yoroshye, iryoshye ku bana.",
+    image: "assets/banane.jpg"
+  },
+  {
+    id: 19,
+    name: "Avocat frais 1kg",
+    category: "imbuto",
+    price: 2000,
+    stock: 40,
+    desc: "Avocat zifasha salade n’amavuta y’umwimerere.",
+    image: "assets/avocat.jpg"
+  },
+  {
+    id: 20,
+    name: "Mangue mûre 1kg",
+    category: "imbuto",
+    price: 1700,
+    stock: 45,
+    desc: "Mangue ziryoshye, zifasha jus na dessert.",
+    image: "assets/mangue.jpg"
+  }
 ];
