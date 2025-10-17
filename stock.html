@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stock yose — Jeune Boutique</title>
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/stock.css" />
+
+  <!-- Inline styles for image background and essential UI -->
+  <style>
+    /* Fullscreen image background */
+    .video-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      background: url('images/fallback.jpg') center/cover no-repeat;
+    }
+
+    /* Overlay content on top of background */
+    .page-overlay { position: relative; z-index: 1; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.2rem; color: #fff;
+    }
+    .topbar a { color: #fff; text-decoration: none; }
+
+    .hero-intro {
+      display: grid; place-items: center; text-align: center;
+      padding: 16vh 1rem 6vh; color: #fff;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.05));
+    }
+    .hero-intro h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 0 0 .4rem; }
+    .hero-intro p {
+      font-size: clamp(1rem, 2.4vw, 1.25rem);
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.35);
+      border-radius: 14px;
+      display: inline-block;
+      padding: .6rem .9rem; color: #fff;
+    }
+    body.dark .hero-intro p { background: rgba(255,255,255,0.18); color: #f6f6f6; }
+
+    /* Controls and catalogue */
+    .stock-controls { display: grid; gap: .75rem; margin: 0 1rem 1rem; }
+    .search-input { max-width: 560px; width: 100%; margin: 0 auto; }
+    .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+    .filter-btn { padding: .45rem .8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.65); }
+    .filter-btn.active { outline: 2px solid rgba(255, 105, 180, 0.6); }
+    body.dark .filter-btn { background: rgba(30,30,30,0.6); border-color: rgba(255,255,255,0.18); color: #f6f6f6; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      padding: 0 1rem 1rem;
+    }
+    .pagination { display: flex; gap: .5rem; justify-content: center; padding: 1rem; }
+    .pagination button { padding: .4rem .7rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.65); }
+    .pagination .active { background: hotpink; color: #fff; border-color: transparent; }
+    body.dark .pagination button { background: rgba(30,30,30,0.6); border-color: rgba(255,255,255,0.18); color: #f6f6f6; }
+
+    /* Product card gloss */
+    .card {
+      background: rgba(255,255,255,0.68);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 14px;
+      padding: .8rem;
+    }
+    body.dark .card {
+      background: rgba(30,30,30,0.6);
+      border-color: rgba(255,255,255,0.18);
+      color: #f6f6f6;
+    }
+
+    /* Floating cart + dark toggle */
+    .floating-cart {
+      position: fixed; right: 16px; bottom: 16px; z-index: 10;
+      font-size: 1.4rem; background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 50%; width: 48px; height: 48px; display: grid; place-items: center;
+      text-decoration: none; color: inherit;
+    }
+    body.dark .floating-cart { background: rgba(30,30,30,0.6); border-color: rgba(255,255,255,0.18); color: #f6f6f6; }
+
+    .dark-toggle {
+      position: fixed; left: 16px; bottom: 16px; z-index: 10;
+      font-size: .95rem; padding: .5rem .7rem; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.65);
+    }
+    body.dark .dark-toggle { background: rgba(30,30,30,0.6); border-color: rgba(255,255,255,0.18); color: #f6f6f6; }
+
+    /* WhatsApp */
+    .whatsapp-section { margin: 2rem 1rem; text-align: center; color: #fff; }
+    .qr-code { width: 160px; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+
+    .footer { text-align: center; padding: 2rem 1rem; color: #fff; }
+    body.dark .footer { color: #f1f1f1; }
+  </style>
+
+  <!-- Dark mode persistence -->
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('jb_dark', document.body.classList.contains('dark'));
+    }
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('jb_dark') === 'true') {
+        document.body.classList.add('dark');
+      }
+    });
+  </script>
+</head>
+<body class="stock-page">
+  <!-- Fullscreen image background -->
+  <div class="video-bg" aria-hidden="true"></div>
+
+  <!-- Page content overlay -->
+  <div class="page-overlay">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="logo">Jeune Boutique ✨</div>
+      <nav style="display:flex;gap:.8rem;">
+        <a href="index.html">🏠 Home</a>
+        <a href="cart.html">🛒 Gare</a>
+      </nav>
+    </header>
+
+    <!-- Hero intro -->
+    <section class="hero-intro">
+      <h1>🛍️ Stock yose</h1>
+      <p>Shakisha, filteringa, ugure vuba—byose biteguye ✨</p>
+    </section>
+
+    <!-- Controls + catalogue -->
+    <main class="section">
+      <div class="stock-controls">
+        <!-- Search -->
+        <input id="searchBar" type="text" placeholder="🔍 Shakisha ibicuruzwa…" class="search-input" />
+
+        <!-- Filters -->
+        <div class="filters">
+          <button data-cat="all" class="filter-btn active">Byose</button>
+          <button data-cat="amata" class="filter-btn">Amata</button>
+          <button data-cat="ibinyobwa" class="filter-btn">Ibinyobwa</button>
+          <button data-cat="isuku" class="filter-btn">Isuku</button>
+        </div>
+      </div>
+
+      <!-- Products grid -->
+      <div id="productsGrid" class="products-grid"></div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="pagination"></div>
+
+      <!-- WhatsApp QR -->
+      <section class="whatsapp-section">
+        <h2>📞 Twandikire kuri WhatsApp</h2>
+        <img src="images/whatsapp-qr.jpg" alt="Scan WhatsApp QR" class="qr-code" />
+        <p>
+          Cyangwa
+          <a href="https://wa.me/25771633859?text=Mwaramutse%20Jeune%20Boutique%2C%20ndifuza%20kumenya%20ibicuruzwa%20mufite%20uyu%20munsi%20😊" target="_blank">
+            kanda hano kugira ngo utangire ikiganiro
+          </a>
+          💬
+        </p>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Jeune Boutique — Made with 💖 in Gihosha</p>
+    </footer>
+  </div>
+
+  <!-- Floating controls -->
+  <button onclick="toggleDark()" class="dark-toggle" aria-label="Hindura mode">🌙/☀️</button>
+  <a href="cart.html" class="floating-cart" aria-label="Gare">🛒</a>
+
+  <!-- Products data -->
+  <script src="js/products.js"></script>
+
+  <!-- Catalogue logic -->
+  <script>
+    const grid = document.getElementById('productsGrid');
+    const searchBar = document.getElementById('searchBar');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const pag = document.getElementById('pagination');
+
+    let currentPage = 1;
+    const perPage = 12;
+    let currentList = (typeof JB_PRODUCTS !== 'undefined') ? JB_PRODUCTS : [];
+
+    function addToCart(id) {
+      const cart = JSON.parse(localStorage.getItem('jb_cart') || '[]');
+      cart.push(id);
+      localStorage.setItem('jb_cart', JSON.stringify(cart));
+      alert('Yongewe mu gare 🛒');
+    }
+
+    function productCard(p) {
+      return `
+        <article class="card">
+          <img src="${p.image}" alt="${p.name}" loading="lazy"
+               style="width:100%;height:180px;object-fit:cover;border-radius:10px;">
+          <h3 style="margin:.6rem 0;">${p.name}</h3>
+          <p style="font-size:.95rem;opacity:.85;margin:.2rem 0 .6rem;">${p.desc || ''}</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;color:#e91e63;">${p.price} Fbu</span>
+            <small>Stock: ${p.stock}</small>
+          </div>
+          <button class="button"
+                  style="margin-top:.7rem;background:#ff69b4;color:#fff;border:none;border-radius:10px;padding:.5rem .8rem;cursor:pointer;">
+            Fata 🛒
+          </button>
+        </article>
+      `;
+    }
+
+    function renderProducts(list) {
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      list.forEach(p => {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = productCard(p);
+        wrap.querySelector('button').addEventListener('click', () => addToCart(p.id));
+        frag.appendChild(wrap);
+      });
+      grid.appendChild(frag);
+    }
+
+    function renderPage(list, page) {
+      const start = (page - 1) * perPage;
+      const end = start + perPage;
+      renderProducts(list.slice(start, end));
+      renderPagination(list.length, page);
+    }
+
+    function renderPagination(total, page) {
+      const pages = Math.ceil(total / perPage) || 1;
+      pag.innerHTML = '';
+      for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = i === page ? 'active' : '';
+        btn.addEventListener('click', () => { currentPage = i; renderPage(currentList, i); });
+        pag.appendChild(btn);
+      }
+    }
+
+    // Search
+    searchBar.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      currentList = JB_PRODUCTS.filter(p =>
+        (p.name || '').toLowerCase().includes(q) ||
+        (p.desc || '').toLowerCase().includes(q)
+      );
+      currentPage = 1;
+      renderPage(currentList, currentPage);
+    });
+
+    // Filters
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        currentList = cat === 'all' ? JB_PRODUCTS : JB_PRODUCTS.filter(p => p.category === cat);
+        currentPage = 1;
+        renderPage(currentList, currentPage);
+      });
+    });
+
+    // Initial render
+    renderPage(currentList, currentPage);
+  </script>
+</body>
+</html>
