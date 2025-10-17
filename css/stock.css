@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock yose — Jeune Boutique</title>
+  <link rel="stylesheet" href="stock.css" />
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('dark', document.body.classList.contains('dark'));
+}
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('dark') === 'true') {
+        document.body.classList.add('dark');
+}
+});
+  </script>
+</head>
+
+<body class="stock-page">
+  <!-- 🖼️ Background layer -->
+  <div class="background-layer"></div>
+
+  <!-- 🌫️ Page overlay -->
+  <div class="page-overlay">
+
+    <!-- 🧭 Topbar -->
+    <header class="topbar">
+      <a class="logo">Jeune Boutique ✨</a>
+    </header>
+
+    <!-- 🧭 Navigation -->
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">🛍️ Store</a>
+      <a href="cart.html">🧾 Gare</a>
+    </nav>
+
+    <!-- 🌟 Hero section -->
+    <section class="hero-intro">
+      <h1>🌟 Frontend</h1>
+      <h2>💻 Stock yose hano</h2>
+      <p>Shakisha, filteringa, urge vuba - bitewe</p>
+    </section>
+
+    <!-- 🔍 Search & filters -->
+    <div class="stock-controls">
+      <input type="text" id="searchBar" class="search-input" placeholder="Shakisha ibicuruzwa..." />
+    </div>
+
+    <div class="filters">
+      <div class="filter-btn">Amata</div>
+      <div class="filter-btn">Amatunda</div>
+      <div class="filter-btn">Isukari</div>
+      <div class="filter-btn">Isuku</div>
+    </div>
+
+    <!-- 🧺 Product grid -->
+    <div class="products-grid" id="productsGrid">
+      <!-- Ibicuruzwa bizashyirwa hano na JS -->
+    </div>
+
+    <!-- 🔢 Pagination -->
+    <div class="pagination" id="pagination"></div>
+
+    <!-- 📲 WhatsApp QR -->
+    <section class="whatsapp-qr.jpg">
+      <h2>Twandikire kuri WhatsApp QR</h2>
+      <img src="images/whatsapp-qr.jpg" alt="WhatsApp QR" class="qr-code" />
+    </section>
+
+    <!-- 🧾 Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Jeune Boutique — Made with in Gihosha</p>
+    </footer>
+  </div>
+
+  <!-- 🌙 Floating dark mode toggle -->
+  <button onclick="toggleDarkMode()" class="dark-toggle" aria-label="Hindura mode y'ijoro">🌙</button>
+
+  <!-- 🛒 Floating cart -->
+  <a href="cart.html" class="floating-cart" aria-label="Gare🛒">🛒</a>
+
+  <!-- 📦 JavaScript -->
+  <script src="js/products.js"></script>
+  <script>
+    const JB_PRODUCTS = [
+      { name: "Ikoti rigezweho", desc: "Ikoti y’abagabo", category: "Isukari", image: "images/item1.jpg"},
+      { name: "Inkweto za siporo", desc: "Inkweto nziza", category: "Isuku", image: "images/item2.jpg"},
+      { name: "Isakoshi", desc: "Ibikoresho by’abagore", category: "Amatunda", image: "images/item3.jpg"}
+    ];
+
+    const searchBar = document.getElementById('searchBar');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const pagination = document.getElementById('pagination');
+    const grid = document.getElementById('productsGrid');
+
+    let currentList = JB_PRODUCTS;
+    let currentPage = 1;
+    const itemsPerPage = 6;
+
+    function renderPage(list = currentList, page = currentPage) {
+      grid.innerHTML = '';
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = list.slice(start, end);
+
+      pageItems.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.name}" />
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+[17/10, 12:04] Microsoft Copilot: <button class="button">Fata 🛒</button>
+        `;
+        grid.appendChild(card);
+});
+
+      renderPagination(list.length);
+}
+
+    function renderPagination(totalItems) {
+      pagination.innerHTML = '';
+      const pages = Math.ceil(totalItems / itemsPerPage);
+      for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          currentPage = i;
+          renderPage();
+});
+        pagination.appendChild(btn);
+}
+}
+
+    searchBar.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      currentList = JB_PRODUCTS.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+);
+      currentPage = 1;
+      renderPage();
+});
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.textContent;
+        currentList = JB_PRODUCTS.filter(p =>
+          p.category === filter
+);
+        currentPage = 1;
+        renderPage();
+});
+});
+
+    renderPage();
+  </script>
+</body>
+</html>
+```
+
+---
