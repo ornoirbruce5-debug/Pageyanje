@@ -1,62 +1,268 @@
 <!DOCTYPE html>
 <html lang="rw">
 <head>
-  <meta charset="UTF-8">
-  <title>Jeune Boutique - Cart</title>
-  <link rel="stylesheet" href="stock.css">
-  <script src="products.js" defer></script>
-  <script src="cart.js" defer></script>
-  <script>
-    function toggleDark() {
-      document.body.classList.toggle('dark');
-      localStorage.setItem('jb_dark', document.body.classList.contains('dark'));
+  <meta charset="utf-8">
+  <title>Jeune Boutique — Cart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{
+      --bg:#fff; --fg:#222; --muted:#666; --accent:#ff6fa3; --card:#fff;
+      --glass: rgba(255,255,255,0.6);
     }
-    window.onload = () => {
-      if (localStorage.getItem('jb_dark') === 'true') {
-        document.body.classList.add('dark');
-      }
-    };
-  </script>
+    body {font-family: Inter, system-ui, Arial; margin:0; background:var(--bg); color:var(--fg); padding:24px;}
+    .container {max-width:980px; margin:0 auto;}
+    header {display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+    a.btn {background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; text-decoration:none;}
+    .cart-table {width:100%; border-collapse:collapse; margin-top:12px;}
+    .cart-table th, .cart-table td {padding:12px; border-bottom:1px solid #eee; vertical-align:middle; text-align:left;}
+    .product-cell {display:flex; gap:12px; align-items:center;}
+    .product-img {width:72px; height:72px; object-fit:cover; border-radius:10px; background:#f6f6f6;}
+    .qty {display:flex; align-items:center; gap:8px;}
+    .qty button {width:30px; height:30px; border-radius:8px; border:none; background:#f0f0f0; cursor:pointer;}
+    .qty input {width:44px; text-align:center; border:1px solid #eee; border-radius:6px; padding:6px;}
+    .muted {color:var(--muted); font-size:14px;}
+    .totals {display:flex; justify-content:flex-end; margin-top:18px; gap:12px; align-items:center;}
+    .totals .summary {background:#fafafa; padding:12px 18px; border-radius:12px; min-width:240px; text-align:right;}
+    .danger {background:#ffe6e9; color:#b30028;}
+    .empty {text-align:center; padding:48px 12px; color:var(--muted);}
+    .actions {display:flex; gap:8px; justify-content:flex-end; margin-top:12px;}
+    small {display:block; color:var(--muted); margin-top:6px;}
+    @media (max-width:700px){
+      .product-img {width:56px; height:56px;}
+      .totals {flex-direction:column; align-items:stretch;}
+      .totals .summary {text-align:left;}
+    }
+  </style>
+  <script src="js/products.js" defer></script>
 </head>
 <body>
-  <!-- 🌙 Toggle -->
-  <button onclick="toggleDark()" class="dark-toggle">🌙/☀️</button>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Jeune Boutique</h1>
+        <div class="muted">Igikapu cyawe</div>
+      </div>
+      <div>
+        <a class="btn" href="stock.html">⟵ Komeza gusura</a>
+      </div>
+    </header>
 
-  <h1>🛍️ Igikapu cyawe</h1>
+    <main id="main">
+      <div id="cart-root"></div>
+    </main>
 
-  <!-- ⏳ Loading spinner -->
-  <div id="loading" class="spinner">🌀 Loading...</div>
+    <footer style="margin-top:36px; text-align:center;" class="muted">
+      © Jeune Boutique
+    </footer>
+  </div>
 
-  <!-- Cart items -->
-  <div id="cart-items"></div>
+  <script>
+    const CART_KEY = 'jb_cart_v1';
 
-  <!-- Total -->
-  <div id="cart-total">Total: 0 Fbu</div>
+    function getCart() {
+      try {
+        return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      } catch (e) {
+        localStorage.removeItem(CART_KEY);
+        return [];
+      }
+    }
 
-  <!-- Checkout -->
-  <section id="checkout">
-    <h2>💳 Checkout</h2>
-    <form id="checkout-form" class="checkout-form">
-      <label>Izina ryawe:</label>
-      <input type="text" name="name" required>
-      <label>Numero ya telefone:</label>
-      <input type="tel" name="phone" required>
-      <label>Aderesi:</label>
-      <input type="text" name="address" required>
-      <button type="submit" class="button">✅ Ohereza commande</button>
-    </form>
-    <div id="confirmation" style="display:none;">
-      <h3>🎉 Murakoze! Commande yanyu yoherejwe neza.</h3>
-    </div>
-  </section>
+    function saveCart(cart) {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      renderCart();
+    }
 
-  <!-- Floating emojis + Toasts -->
-  <div class="floating-emojis" id="floating-emojis"></div>
-  <div class="toast-stack" id="toast-stack"></div>
+    function findProduct(productId) {
+      if (!window.products) return null;
+      return window.products.find(p => String(p.id) === String(productId)) || null;
+    }
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Jeune Boutique 💖</p>
-  </footer>
+    function formatPrice(n) {
+      return Number(n).toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0}) + ' Fbu';
+    }
+
+    function qtyFor(id) {
+      const cart = getCart();
+      const item = cart.find(i => String(i.id) === String(id));
+      return item ? item.qty : 0;
+    }
+
+    function changeQty(id, newQty) {
+      const cart = getCart();
+      const idx = cart.findIndex(i => String(i.id) === String(id));
+      if (newQty <= 0) {
+        if (idx > -1) cart.splice(idx,1);
+      } else {
+        if (idx > -1) cart[idx].qty = newQty;
+        else cart.push({id: String(id), qty: Number(newQty)});
+      }
+      saveCart(cart);
+    }
+
+    function removeItem(id) {
+      const cart = getCart().filter(i => String(id));
+      saveCart(cart);
+    }
+
+    function clearCart() {
+      localStorage.removeItem(CART_KEY);
+      renderCart();
+    }
+
+    function cartSummary() {
+      const cart = getCart();
+      let items = 0, subtotal = 0;
+      cart.forEach(ci => {
+        const p = findProduct(ci.id);
+        if (!p) return;
+        items += ci.qty;
+        subtotal += p.price * ci.qty;
+      });
+      return {items, subtotal};
+    }
+
+    function buildCartTable(cart) {
+      if (!cart.length) {
+        return `<div class="empty">
+          <h3>Igikapu kirimo ubusa</h3>
+          <small>Wongeraho ibicuruzwa uhereye kuri page y'ibicuruzwa.</small>
+        </div>`;
+      }
+
+      let rows = `
+      <table class="cart-table" role="table">
+        <thead>
+          <tr>
+            <th>Ibicuruzwa</th>
+            <th>Igiciro</th>
+            <th>Umubare</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+
+      cart.forEach(ci => {
+        const p = findProduct(ci.id);
+        if (!p) return;
+        const subtotal = p.price * ci.qty;
+        rows += `
+          <tr data-id="${ci.id}">
+            <td>
+              <div class="product-cell">
+                <img class="product-img" src="${p.image}" alt="${escapeHtml(p.name)}">
+                <div>
+                  <strong>${escapeHtml(p.name)}</strong>
+                  <div class="muted">${escapeHtml(p.category || '')}</div>
+                </div>
+              </div>
+            </td>
+            <td>${formatPrice(p.price)}</td>
+            <td>
+              <div class="qty" aria-label="Quantity controls">
+                <button onclick="decrementQty('${ci.id}')">−</button>
+                <input type="number" min="1" value="${ci.qty}" onchange="setQty('${ci.id}', this.value)">
+                <button onclick="incrementQty('${ci.id}')">+</button>
+              </div>
+            </td>
+            <td><strong>${formatPrice(subtotal)}</strong></td>
+            <td><button onclick="removeItem('${ci.id}')" class="danger">Siba</button></td>
+          </tr>
+        `;
+      });
+
+      rows += `</tbody></table>`;
+      return rows;
+    }
+
+    function renderCart() {
+      const root = document.getElementById('cart-root');
+      const cart = getCart();
+
+      // Filter out products that no longer exist
+      const cleaned = cart.filter(ci => findProduct(ci.id));
+      if (cleaned.length !== cart.length) saveCart(cleaned);
+
+      root.innerHTML = buildCartTable(cleaned);
+
+      const summary = cartSummary();
+      const totalsHtml = `
+        <div class="totals">
+          <div class="summary">
+            <div><strong>Items:</strong> ${summary.items}</div>
+            <div style="margin-top:8px;"><strong>Total:</strong> ${formatPrice(summary.subtotal)}</div>
+            <div class="actions">
+              <button onclick="clearCart()" style="background:#f7f7f7; border-radius:8px; padding:8px 12px;">Siba byose</button>
+              <button onclick="checkout()" class="btn" style="margin-left:8px;">Gura (Checkout)</button>
+            </div>
+          </div>
+        </div>
+      `;
+      root.insertAdjacentHTML('beforeend', totalsHtml);
+    }
+
+    // Quantity helpers used by inline handlers
+    function incrementQty(id) {
+      const current = qtyFor(id);
+      changeQty(id, current + 1);
+    }
+    function decrementQty(id) {
+      const current = qtyFor(id);
+      changeQty(id, current - 1);
+    }
+    function setQty(id, value) {
+      const n = parseInt(value, 10) || 0;
+      changeQty(id, n);
+    }
+
+    function checkout() {
+      const summary = cartSummary();
+      if (summary.items === 0) {
+        alert('Igikapu kirimo ubusa.');
+        return;
+      }
+
+      // Simple checkout: create WhatsApp order text and open link
+      const cart = getCart();
+      const lines = cart.map(ci => {
+        const p = findProduct(ci.id);
+        if (!p) return '';
+        return `${p.name} x ${ci.qty} — ${formatPrice(p.price * ci.qty)}`;
+      }).filter(Boolean);
+
+      const text = encodeURIComponent(
+        `Mwaramutse Jeune Boutique,%0Andifuza kugura:%0A${lines.join('%0A')}` +
+        `%0A%0ATotal: ${formatPrice(summary.subtotal)}`
+      );
+
+      // Update the phone below to your shop WhatsApp number
+      const waNumber = '+25771633859';
+      const waUrl = `https://wa.me/${waNumber}?text=${text}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // basic XSS escape for attributes/innerText usage
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    // Render once products.js is available
+    function waitForProductsThenRender() {
+      if (window.products && Array.isArray(window.products)) {
+        renderCart();
+      } else {
+        setTimeout(waitForProductsThenRender, 80);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', waitForProductsThenRender);
+  </script>
 </body>
 </html>
