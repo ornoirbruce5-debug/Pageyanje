@@ -26,7 +26,7 @@
   height: 100%;
   overflow: hidden;
   z-index: -1;
-  background: url('images/fallback.jpg') center / cover no-repeat;
+  background: url('images/hero.jpg') center / cover no-repeat;
 }
 .stock-page .video-bg video {
   position: absolute;
