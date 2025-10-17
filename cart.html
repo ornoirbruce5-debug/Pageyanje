@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeune Boutique - Cart</title>
+  <link rel="stylesheet" href="stock.css">
+  <script src="products.js" defer></script>
+  <script src="cart.js" defer></script>
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('jb_dark', document.body.classList.contains('dark'));
+    }
+    window.onload = () => {
+      if (localStorage.getItem('jb_dark') === 'true') {
+        document.body.classList.add('dark');
+      }
+    };
+  </script>
+</head>
+<body>
+  <!-- 🌙 Toggle -->
+  <button onclick="toggleDark()" class="dark-toggle">🌙/☀️</button>
+
+  <h1>🛍️ Igikapu cyawe</h1>
+
+  <!-- ⏳ Loading spinner -->
+  <div id="loading" class="spinner">🌀 Loading...</div>
+
+  <!-- Cart items -->
+  <div id="cart-items"></div>
+
+  <!-- Total -->
+  <div id="cart-total">Total: 0 Fbu</div>
+
+  <!-- Checkout -->
+  <section id="checkout">
+    <h2>💳 Checkout</h2>
+    <form id="checkout-form" class="checkout-form">
+      <label>Izina ryawe:</label>
+      <input type="text" name="name" required>
+      <label>Numero ya telefone:</label>
+      <input type="tel" name="phone" required>
+      <label>Aderesi:</label>
+      <input type="text" name="address" required>
+      <button type="submit" class="button">✅ Ohereza commande</button>
+    </form>
+    <div id="confirmation" style="display:none;">
+      <h3>🎉 Murakoze! Commande yanyu yoherejwe neza.</h3>
+    </div>
+  </section>
+
+  <!-- Floating emojis + Toasts -->
+  <div class="floating-emojis" id="floating-emojis"></div>
+  <div class="toast-stack" id="toast-stack"></div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Jeune Boutique 💖</p>
+  </footer>
+</body>
+</html>
