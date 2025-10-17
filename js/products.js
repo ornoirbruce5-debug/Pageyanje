@@ -1,82 +1,184 @@
-// 🛍️ Jeune Boutique catalogue with categories, stock & tags
-window.products = [
+// js/products.js
+
+window.JB_PRODUCTS = [
   {
-    id: "jb001",
-    name: "Ikanzu ya Summer 🌸",
-    price: 18000,
-    image: "images/ikanzu-summer.jpg",
-    description: "Ikanzu yoroheje, ifite amabara ya pastel, ikwiriye ibirori n’iminsi y’izuba.",
-    category: "Dresses",
+    id: 1,
+    name: "Amata ya Mukamu",
+    category: "amata",
+    price: 1800,
+    stock: 24,
+    desc: "Amata meza, fresh ku muhingo.",
+    image: "assets/amata1.jpg"
+  },
+  {
+    id: 2,
+    name: "Amata y'ifu",
+    category: "amata",
+    price: 3200,
     stock: 12,
-    tags: ["dress", "pastel", "summer", "girly", "light"]
+    desc: "Yoroheje kubika, yoroshwa amazi.",
+    image: "assets/amata2.jpg"
   },
   {
-    id: "jb002",
-    name: "Sneakers za Jeune 🔥",
-    price: 25000,
-    image: "images/sneakers-jeune.jpg",
-    description: "Sneakers zigezweho, zifite design ya girly-glossy, zikwiriye kwambara buri munsi.",
-    category: "Shoes",
-    stock: 8,
-    tags: ["sneakers", "trendy", "glossy", "youth", "streetwear"]
+    id: 3,
+    name: "Jus d'ananas",
+    category: "ibinyobwa",
+    price: 1500,
+    stock: 40,
+    desc: "Jus y'ananasi ishaririza neza.",
+    image: "assets/jus1.jpg"
   },
   {
-    id: "jb003",
-    name: "Sac à main 💼",
-    price: 12000,
-    image: "images/sac-main.jpg",
-    description: "Agasakoshi gato, gafite glassmorphism finish, gakwiriye kwambara n’ikanzu.",
-    category: "Accessories",
-    stock: 15,
-    tags: ["bag", "handbag", "girly", "glassmorphism", "fashion"]
+    id: 4,
+    name: "Soda Cola 50cl",
+    category: "ibinyobwa",
+    price: 1200,
+    stock: 60,
+    desc: "Soda ishushe ku bukonje.",
+    image: "assets/soda1.jpg"
   },
   {
-    id: "jb004",
-    name: "T-shirt y’urukundo 💖",
-    price: 9000,
-    image: "images/tshirt-love.jpg",
-    description: "T-shirt ifite message y’urukundo mu Kirundi, ikoze mu ipamba nziza.",
-    category: "Tops",
-    stock: 20,
-    tags: ["tshirt", "love", "kirundi", "casual", "youth"]
+    id: 5,
+    name: "Savon Isuku",
+    category: "isuku",
+    price: 900,
+    stock: 70,
+    desc: "Isabune y'indimu, ihumura neza.",
+    image: "assets/savon1.jpg"
   },
   {
-    id: "jb005",
-    name: "Amadarubindi ya Gloss 😎",
-    price: 15000,
-    image: "images/glossy-glasses.jpg",
-    description: "Amadarubindi ya girly-glossy, akurura urumuri kandi akongerera style.",
-    category: "Accessories",
-    stock: 10,
-    tags: ["glasses", "glossy", "girly", "sunny", "style"]
-  },
-  {
-    id: "jb006",
-    name: "Lip Gloss ya Jeune 💋",
-    price: 7000,
-    image: "images/lipgloss-jeune.jpg",
-    description: "Lip gloss ifite sparkle ya pastel, iryoshye kandi ikurura urumuri.",
-    category: "Beauty",
+    id: 6,
+    name: "Serviettes Soft",
+    category: "isuku",
+    price: 2100,
     stock: 25,
-    tags: ["lipgloss", "beauty", "sparkle", "girly", "makeup"]
+    desc: "Papier doux, umwumbati.",
+    image: "assets/serviettes.jpg"
   },
   {
-    id: "jb007",
-    name: "Crop Top ya Weekend 🎀",
-    price: 11000,
-    image: "images/croptop-weekend.jpg",
-    description: "Crop top ya satin, ikwiriye weekend vibes na selfies.",
-    category: "Tops,
-    tags: ["croptop", "weekend", "satin", "girly", "youth"]
+    id: 7,
+    name: "Pain Complet",
+    category: "ibifungurwa",
+    price: 1300,
+    stock: 30,
+    desc: "Umutsima wuzuye, wuzuye fibre.",
+    image: "assets/pain.jpg"
   },
   {
-    id: "jb008",
-    name: "Jeune Hoodie 🧥",
-    price: 22000,
-    image: "images/hoodie-jeune.jpg",
-    description: "Hoodie ifite logo ya Jeune Boutique, yoroheje kandi ishyushye.",
-    category: "Hoodies",
-    stock: 9,
-    tags: ["hoodie", "casual", "warm", "youth", "streetwear"]
+    id: 8,
+    name: "Riz Basmati 1kg",
+    category: "ibifungurwa",
+    price: 2900,
+    stock: 50,
+    desc: "Riz yoroheje, iryoshye ku mafunguro.",
+    image: "assets/riz.jpg"
+  },
+  {
+    id: 9,
+    name: "Huile de Tournesol",
+    category: "ibifungurwa",
+    price: 4800,
+    stock: 20,
+    desc: "Amavuta meza yo guteka.",
+    image: "assets/huile.jpg"
+  },
+  {
+    id: 10,
+    name: "Tomates fraîches 1kg",
+    category: "imboga",
+    price: 1500,
+    stock: 35,
+    desc: "Tomates zifasha guteka sauce.",
+    image: "assets/tomates.jpg"
+  },
+  {
+    id: 11,
+    name: "Carottes fraîches 1kg",
+    category: "imboga",
+    price: 1400,
+    stock: 40,
+    desc: "Carottes zifasha salade n’isupu.",
+    image: "assets/carottes.jpg"
+  },
+  {
+    id: 12,
+    name: "Oignons rouges 1kg",
+    category: "imboga",
+    price: 1600,
+    stock: 45,
+    desc: "Ibitunguru bitukura, biryoshye.",
+    image: "assets/oignons.jpg"
+  },
+  {
+    id: 13,
+    name: "Biscuit Chocolat",
+    category: "snacks",
+    price: 800,
+    stock: 100,
+    desc: "Biscuit y'ifu y'isukari n'ibishishwa bya chocolat.",
+    image: "assets/biscuit.jpg"
+  },
+  {
+    id: 14,
+    name: "Chips Nature",
+    category: "snacks",
+    price: 700,
+    stock: 80,
+    desc: "Chips zifite umunyu muke, ziryoshye ku rugendo.",
+    image: "assets/chips.jpg"
+  },
+  {
+    id: 15,
+    name: "Eau Minérale 1L",
+    category: "ibinyobwa",
+    price: 1000,
+    stock: 90,
+    desc: "Amazi meza, atagira gaz, 1L.",
+    image: "assets/eau.jpg"
+  },
+  {
+    id: 16,
+    name: "Lait Corporel",
+    category: "isuku",
+    price: 3500,
+    stock: 18,
+    desc: "Amavuta yo kwisiga, yoroheje uruhu.",
+    image: "assets/lait.jpg"
+  },
+  {
+    id: 17,
+    name: "Crème Visage",
+    category: "isuku",
+    price: 4200,
+    stock: 15,
+    desc: "Crème y’amaso, irinda izuba.",
+    image: "assets/creme.jpg"
+  },
+  {
+    id: 18,
+    name: "Banane douce 1kg",
+    category: "imbuto",
+    price: 1300,
+    stock: 50,
+    desc: "Imineke yoroshye, iryoshye ku bana.",
+    image: "assets/banane.jpg"
+  },
+  {
+    id: 19,
+    name: "Avocat frais 1kg",
+    category: "imbuto",
+    price: 2000,
+    stock: 40,
+    desc: "Avocat zifasha salade n’amavuta y’umwimerere.",
+    image: "assets/avocat.jpg"
+  },
+  {
+    id: 20,
+    name: "Mangue mûre 1kg",
+    category: "imbuto",
+    price: 1700,
+    stock: 45,
+    desc: "Mangue ziryoshye, zifasha jus na dessert.",
+    image: "assets/mangue.jpg"
   }
 ];
