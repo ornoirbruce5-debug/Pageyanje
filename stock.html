@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Jeune Boutique</title>
   <link rel="stylesheet" href="css/stock.css">
+  <!-- Products & Cart logic -->
   <script src="js/products.js" defer></script>
   <script src="js/cart.js" defer></script>
   <script>
@@ -32,6 +33,20 @@
     <p>Ibikoresho bishya, byiza kandi by’umwimerere ✨</p>
   </header>
 
+  <!-- Filters -->
+  <section id="filters">
+    <input type="text" id="search" placeholder="🔍 Shakisha ibicuruzwa (ex: glossy, weekend)">
+    <select id="category-filter">
+      <option value="all">All Categories</option>
+      <option value="Dresses">Dresses</option>
+      <option value="Shoes">Shoes</option>
+      <option value="Accessories">Accessories</option>
+      <option value="Tops">Tops</option>
+      <option value="Beauty">Beauty</option>
+      <option value="Hoodies">Hoodies</option>
+    </select>
+  </section>
+
   <!-- Catalogue -->
   <section id="catalogue">
     <h2>🛍️ Ibicuruzwa Byacu</h2>
@@ -41,9 +56,9 @@
   <!-- WhatsApp -->
   <section class="whatsapp-section">
     <h2>📱 Twandikire kuri WhatsApp</h2>
-    <img src="images/Whatsapp-qr.jpg" alt="Scan QR to chat" class="qr-code">
+    <img src="images/whatsapp-qr.jpg" alt="Scan QR to chat" class="qr-code">
     <p>
-      Cyangwa <a href="https://wa.me/25771633859?text=Mwaramutse%20Jeune%20Boutique%2C%20ndifuza%20kumva%20ibicuruzwa%20mufite%20uyu%20munsi%20😊" target="_blank">
+      Cyangwa <a href="https://wa.me/+25771633859?text=Mwaramutse%20Jeune%20Boutique%2C%20ndifuza%20kumva%20ibicuruzwa%20mufite%20uyu%20munsi%20😊" target="_blank">
         kanda hano kugira ngo utangire ikiganiro
       </a> 💬
     </p>
@@ -87,8 +102,52 @@
     <p>© 2025 Jeune Boutique 💖</p>
   </footer>
 
+  <!-- Catalogue rendering logic -->
   <script>
-    // Testimonials Carousel Logic
+    function renderProducts(filterText = "", category = "all") {
+      const list = document.getElementById("product-list");
+      list.innerHTML = "";
+
+      const search = filterText.toLowerCase();
+
+      window.products
+        .filter(p => {
+          const inCategory = category === "all" || p.category === category;
+          const inTags = p.tags.some(tag => tag.toLowerCase().includes(search));
+          const inName = p.name.toLowerCase().includes(search);
+          return inCategory && (search === "" || inTags || inName);
+        })
+        .forEach(product => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p><strong>${product.price} Fbu</strong></p>
+            <p>Stock: ${product.stock > 0 ? product.stock : "Sold Out 🚫"}</p>
+            <button onclick="addToCart('${product.id}')" ${product.stock === 0 ? "disabled" : ""}>
+              🛒 Add to Cart
+            </button>
+          `;
+          list.appendChild(card);
+        });
+    }
+
+    // Filters setup
+    window.addEventListener("DOMContentLoaded", () => {
+      renderProducts();
+
+      document.getElementById("search").addEventListener("input", e => {
+        renderProducts(e.target.value, document.getElementById("category-filter").value);
+      });
+
+      document.getElementById("category-filter").addEventListener("change", e => {
+        renderProducts(document.getElementById("search").value, e.target.value);
+      });
+    });
+
+    // Testimonials carousel
     let currentTestimonial = 0;
     function showTestimonial(index) {
       const testimonials = document.querySelectorAll("#testimonial-carousel .testimonial");
