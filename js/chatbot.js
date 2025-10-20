@@ -163,20 +163,20 @@ function handleMessage(msg){
   }
 
   // Categories
-  if(lower.includes("amata")){
-    const list = JB_PRODUCTS.filter(p => p.category === "amata");
-    return botReply("Amata dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
+  if(lower.includes("impuzu")){
+    const list = JB_PRODUCTS.filter(p => p.category === "impuzu");
+    return botReply("impuzu dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
   }
-  if(lower.includes("ibinyobwa")){
-    const list = JB_PRODUCTS.filter(p => p.category === "ibinyobwa");
-    return botReply("Ibinyobwa dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
+  if(lower.includes("ibirato")){
+    const list = JB_PRODUCTS.filter(p => p.category === "ibirato");
+    return botReply("Ibirato dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
   }
 
   // Default fallback
   if(!userName){
     return askNameIfNeeded();
   }
-  return botReply("Ndakumva sha 🌸, ushobora kumbwira ibyo ushaka: amata, ibinyobwa, checkout…");
+  return botReply("Ndakumva sha 🌸, ushobora kumbwira ibyo ushaka: impizu, ibirato, checkout…");
 }
 
 // Send message
@@ -197,5 +197,5 @@ chatInput.addEventListener('keypress', e => {
 if(!userName){
   askNameIfNeeded();
 } else {
-  botReply(`Bite ${userName} 🌸, urakaze neza kuri Jeune Boutique!`);
+  botReply(`Bite ${userName} 🌸, urakaza neza kuri Jeune Boutique!`);
 }
