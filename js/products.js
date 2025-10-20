@@ -3,182 +3,182 @@
 window.JB_PRODUCTS = [
   {
     id: 1,
-    name: "Amata ya Mukamu",
-    category: "amata",
+    name: "air nike",
+    category: "ibirato vyabahungu",
     price: 1800,
     stock: 24,
-    desc: "Amata meza, fresh ku muhingo.",
-    image: "assets/amata1.jpg"
+    desc: "quality yakataraboneka kuba jeune .",
+    image: "assets/airnike.jpg"
   },
   {
     id: 2,
-    name: "Amata y'ifu",
-    category: "amata",
+    name: "airfox nziza itamenyerewe cane",
+    category: "ibirato vyabahungu",
     price: 3200,
     stock: 12,
-    desc: "Yoroheje kubika, yoroshwa amazi.",
-    image: "assets/amata2.jpg"
+    desc: "birabera xna 👌🏽.",
+    image: "assets/airfox.jpg"
   },
   {
     id: 3,
-    name: "Jus d'ananas",
-    category: "ibinyobwa",
+    name: "sandals",
+    category: "ibirato vy'abakobwa",
     price: 1500,
     stock: 40,
-    desc: "Jus y'ananasi ishaririza neza.",
-    image: "assets/jus1.jpg"
+    desc: "izi sandals ziri fast kwambara.",
+    image: "assets/sandals.jpg"
   },
   {
     id: 4,
-    name: "Soda Cola 50cl",
-    category: "ibinyobwa",
+    name: "ikenya",
+    category: "ibirato vy'abakobwa",
     price: 1200,
     stock: 60,
-    desc: "Soda ishushe ku bukonje.",
-    image: "assets/soda1.jpg"
+    desc: "izi kenya zirakomeye gusumba.",
+    image: "assets/ikenya.jpg"
   },
   {
     id: 5,
-    name: "Savon Isuku",
-    category: "isuku",
+    name: "la Costa",
+    category: "impuzu",
     price: 900,
     stock: 70,
-    desc: "Isabune y'indimu, ihumura neza.",
-    image: "assets/savon1.jpg"
+    desc: "irabereye abagabo.",
+    image: "assets/lacosta.jpg"
   },
   {
     id: 6,
-    name: "Serviettes Soft",
-    category: "isuku",
+    name: "jupe",
+    category: "impuzu",
     price: 2100,
     stock: 25,
-    desc: "Papier doux, umwumbati.",
-    image: "assets/serviettes.jpg"
+    desc: "iyi jupe ifise couleur nziza.",
+    image: "assets/jupe.jpg"
   },
   {
     id: 7,
-    name: "Pain Complet",
-    category: "ibifungurwa",
+    name: "akadede",
+    category: "ibidede",
     price: 1300,
     stock: 30,
-    desc: "Umutsima wuzuye, wuzuye fibre.",
-    image: "assets/pain.jpg"
+    desc: "iyi style irarenze igaragaza akaranga.",
+    image: "assets/ubusaro.jpg"
   },
   {
     id: 8,
-    name: "Riz Basmati 1kg",
-    category: "ibifungurwa",
+    name: "akadede",
+    category: "ibidede",
     price: 2900,
     stock: 50,
-    desc: "Riz yoroheje, iryoshye ku mafunguro.",
-    image: "assets/riz.jpg"
+    desc: "nikuri bose abahungu n'abakobwa.",
+    image: "assets/ikidede.jpg"
   },
   {
     id: 9,
-    name: "Huile de Tournesol",
-    category: "ibifungurwa",
+    name: "boucle d'oreille",
+    category: "amahereni",
     price: 4800,
     stock: 20,
-    desc: "Amavuta meza yo guteka.",
-    image: "assets/huile.jpg"
+    desc: "Aya mahereni ni👌🏽.",
+    image: "assets/amahereni1.jpg"
   },
   {
     id: 10,
-    name: "Tomates fraîches 1kg",
-    category: "imboga",
+    name: "bouche d'oreilles",
+    category: "amahereni",
     price: 1500,
     stock: 35,
-    desc: "Tomates zifasha guteka sauce.",
-    image: "assets/tomates.jpg"
+    desc: "iyi nayo ni top kuba sto💖.",
+    image: "assets/amahereni2.jpg"
   },
   {
     id: 11,
-    name: "Carottes fraîches 1kg",
-    category: "imboga",
+    name: "ikidede",
+    category: "ibidede",
     price: 1400,
     stock: 40,
-    desc: "Carottes zifasha salade n’isupu.",
-    image: "assets/carottes.jpg"
+    desc: "iyi style ni🔥 kuba jeune .",
+    image: "assets/collier.jpg"
   },
   {
     id: 12,
-    name: "Oignons rouges 1kg",
-    category: "imboga",
+    name: "boucle d'oreille",
+    category: "amahereni",
     price: 1600,
     stock: 45,
-    desc: "Ibitunguru bitukura, biryoshye.",
-    image: "assets/oignons.jpg"
+    desc: "uyambaye uhita ugaragara aho uri🫣.",
+    image: "assets/amahereni3.jpg"
   },
   {
     id: 13,
-    name: "Biscuit Chocolat",
-    category: "snacks",
+    name: "jeans",
+    category: "impuzu",
     price: 800,
     stock: 100,
-    desc: "Biscuit y'ifu y'isukari n'ibishishwa bya chocolat.",
-    image: "assets/biscuit.jpg"
+    desc: "jeans nziza.",
+    image: "assets/jeans.jpg"
   },
   {
     id: 14,
-    name: "Chips Nature",
-    category: "snacks",
+    name: "boyfriend",
+    category: "impuzu",
     price: 700,
     stock: 80,
-    desc: "Chips zifite umunyu muke, ziryoshye ku rugendo.",
-    image: "assets/chips.jpg"
+    desc: Over size ya bien👌🏽.",
+    image: "assets/boyfriend.jpg"
   },
   {
     id: 15,
-    name: "Eau Minérale 1L",
-    category: "ibinyobwa",
+    name: "ikabutura",
+    category: "impuzu",
     price: 1000,
     stock: 90,
-    desc: "Amazi meza, atagira gaz, 1L.",
-    image: "assets/eau.jpg"
+    desc: "3/4 irenze.",
+    image: "assets/ikabutura.jpg"
   },
   {
     id: 16,
-    name: "Lait Corporel",
-    category: "isuku",
+    name: "tissu",
+    category: "impuzu",
     price: 3500,
     stock: 18,
-    desc: "Amavuta yo kwisiga, yoroheje uruhu.",
-    image: "assets/lait.jpg"
+    desc: "iyi tissu mumanza ni top.",
+    image: "assets/tissu.jpg"
   },
   {
     id: 17,
-    name: "Crème Visage",
-    category: "isuku",
+    name: "jacket",
+    category: "impuzu",
     price: 4200,
     stock: 15,
-    desc: "Crème y’amaso, irinda izuba.",
-    image: "assets/creme.jpg"
+    desc: "iyi jacket ni wanne.",
+    image: "assets/jacket.jpg"
   },
   {
     id: 18,
-    name: "Banane douce 1kg",
-    category: "imbuto",
+    name: "mallot",
+    category: "impuzu",
     price: 1300,
     stock: 50,
-    desc: "Imineke yoroshye, iryoshye ku bana.",
-    image: "assets/banane.jpg"
+    desc: "I mallot ifite quality ya bien kugiciro gito .",
+    image: "assets/mallot1.jpg"
   },
   {
     id: 19,
-    name: "Avocat frais 1kg",
-    category: "imbuto",
+    name: "mallot z'abana",
+    category: "impuzu",
     price: 2000,
     stock: 40,
-    desc: "Avocat zifasha salade n’amavuta y’umwimerere.",
-    image: "assets/avocat.jpg"
+    desc: "iyi mallot ni original .",
+    image: "assets/mallot2.jpg"
   },
   {
     id: 20,
-    name: "Mangue mûre 1kg",
-    category: "imbuto",
+    name: "amarori",
+    category: "lunettes",
     price: 1700,
     stock: 45,
-    desc: "Mangue ziryoshye, zifasha jus na dessert.",
-    image: "assets/mangue.jpg"
+    desc: "iyi pair irasara.",
+    image: "assets/lunettes.jpg"
   }
 ];
