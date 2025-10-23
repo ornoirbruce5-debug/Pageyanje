@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel — Jeune Boutique</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-page">
+  <header class="admin-header">
+    <h1>⚙️ Admin Panel</h1>
+    <nav><a href="stock.html">⬅️ Subira kuri Stock</a></nav>
+  </header>
+
+  <main>
+    <!-- Form yo kongera / guhindura -->
+    <section class="form-section">
+      <h2>Ongeramo / Hindura Igicuruzwa</h2>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <input type="text" id="productName" placeholder="Izina" required>
+        <input type="text" id="productCategory" placeholder="Category" required>
+        <input type="number" id="productPrice" placeholder="Igiciro" required>
+        <input type="number" id="productStock" placeholder="Stock" required>
+        <input type="text" id="productImage" placeholder="Image URL" required>
+        <textarea id="productDesc" placeholder="Description"></textarea>
+        <button type="submit">💾 Bika</button>
+      </form>
+    </section>
+
+    <!-- Table y’ibicuruzwa -->
+    <section class="table-section">
+      <h2>Ibicuruzwa byose</h2>
+      <table id="productsTable">
+        <thead>
+          <tr>
+            <th>Izina</th>
+            <th>Category</th>
+            <th>Igiciro</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="products.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
