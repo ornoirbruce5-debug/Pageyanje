@@ -1,0 +1,76 @@
+body.admin-page {
+  font-family: 'Segoe UI', sans-serif;
+  background: #fff0f8;
+  color: #403042;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-header {
+  background: #ff69b4;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-header a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  padding: 1.5rem;
+}
+
+.form-section, .table-section {
+  margin-bottom: 2rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+#productForm {
+  display: grid;
+  gap: .6rem;
+}
+#productForm input, #productForm textarea {
+  padding: .6rem .8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+#productForm button {
+  background: #ff69b4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .6rem 1rem;
+  cursor: pointer;
+}
+#productForm button:hover {
+  background: #e91e63;
+}
+
+#productsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+#productsTable th, #productsTable td {
+  border: 1px solid #ddd;
+  padding: .6rem;
+  text-align: left;
+}
+#productsTable th {
+  background: #ffe0f3;
+}
+.action-btn {
+  margin-right: .4rem;
+  padding: .3rem .6rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.edit-btn { background: #9b5bf0; color: #fff; }
+.delete-btn { background: #ff4fa6; color: #fff; }
