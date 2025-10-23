@@ -1,184 +1,106 @@
-// js/products.js
+// products.js — Jeune Boutique catalogue (default 10 products)
 
 window.JB_PRODUCTS = [
   {
     id: 1,
-    name: "air nike",
-    category: "ibirato vyabahungu",
-    price: 1800,
-    stock: 24,
-    desc: "quality yakataraboneka kuba jeune .",
-    image: "assets/airnike.jpg"
+    name: "Yaourt Nature",
+    category: "amata",
+    price: 1500,
+    stock: 20,
+    desc: "Yaourt isukuye, ikonje neza",
+    image: "assets/yaourt.jpg"
   },
   {
     id: 2,
-    name: "airfox nziza itamenyerewe cane",
-    category: "ibirato vyabahungu",
-    price: 3200,
-    stock: 12,
-    desc: "birabera xna 👌🏽.",
-    image: "assets/airfox.jpg"
+    name: "Fanta Orange",
+    category: "ibinyobwa",
+    price: 1000,
+    stock: 50,
+    desc: "Inyota irashira",
+    image: "assets/fanta.jpg"
   },
   {
     id: 3,
-    name: "sandals",
-    category: "ibirato vy'abakobwa",
-    price: 1500,
-    stock: 40,
-    desc: "izi sandals ziri fast kwambara.",
-    image: "assets/sandals.jpg"
+    name: "Ibirato Boys",
+    category: "ibirato vyabahungu",
+    price: 12000,
+    stock: 10,
+    desc: "Ibirato bikomeye vy’abahungu",
+    image: "assets/shoes_boys.jpg"
   },
   {
     id: 4,
-    name: "ikenya",
+    name: "Ibirato Girls",
     category: "ibirato vy'abakobwa",
-    price: 1200,
-    stock: 60,
-    desc: "izi kenya zirakomeye gusumba.",
-    image: "assets/ikenya.jpg"
+    price: 15000,
+    stock: 8,
+    desc: "Ibirato byiza vy’abakobwa",
+    image: "assets/shoes_girls.jpg"
   },
   {
     id: 5,
-    name: "la Costa",
+    name: "Amahereni Gold",
     category: "impuzu",
-    price: 900,
-    stock: 70,
-    desc: "irabereye abagabo.",
-    image: "assets/lacosta.jpg"
+    price: 5000,
+    stock: 15,
+    desc: "Amahereni y’imitako ya zahabu",
+    image: "assets/earrings.jpg"
   },
   {
     id: 6,
-    name: "jupe",
+    name: "T-shirt Jeune",
     category: "impuzu",
-    price: 2100,
+    price: 7000,
     stock: 25,
-    desc: "iyi jupe ifise couleur nziza.",
-    image: "assets/jupe.jpg"
+    desc: "T-shirt y’urubyiruko",
+    image: "assets/tshirt.jpg"
   },
   {
     id: 7,
-    name: "akadede",
-    category: "ibidede",
-    price: 1300,
+    name: "Cap Youth",
+    category: "impuzu",
+    price: 4000,
     stock: 30,
-    desc: "iyi style irarenze igaragaza akaranga.",
-    image: "assets/ubusaro.jpg"
+    desc: "Cap y’urubyiruko",
+    image: "assets/cap.jpg"
   },
   {
     id: 8,
-    name: "akadede",
-    category: "ibidede",
-    price: 2900,
-    stock: 50,
-    desc: "nikuri bose abahungu n'abakobwa.",
-    image: "assets/ikidede.jpg"
+    name: "Juice Cocktail",
+    category: "ibinyobwa",
+    price: 2000,
+    stock: 40,
+    desc: "Juice mix ikonje",
+    image: "assets/juice.jpg"
   },
   {
     id: 9,
-    name: "boucle d'oreille",
-    category: "amahereni",
-    price: 4800,
-    stock: 20,
-    desc: "Aya mahereni ni👌🏽.",
-    image: "assets/amahereni1.jpg"
+    name: "Sneakers Trendy",
+    category: "ibirato vy'abakobwa",
+    price: 18000,
+    stock: 12,
+    desc: "Sneakers zigezweho",
+    image: "assets/sneakers.jpg"
   },
   {
     id: 10,
-    name: "bouche d'oreilles",
-    category: "amahereni",
-    price: 1500,
-    stock: 35,
-    desc: "iyi nayo ni top kuba sto💖.",
-    image: "assets/amahereni2.jpg"
-  },
-  {
-    id: 11,
-    name: "ikidede",
-    category: "ibidede",
-    price: 1400,
-    stock: 40,
-    desc: "iyi style ni🔥 kuba jeune .",
-    image: "assets/collier.jpg"
-  },
-  {
-    id: 12,
-    name: "boucle d'oreille",
-    category: "amahereni",
-    price: 1600,
-    stock: 45,
-    desc: "uyambaye uhita ugaragara aho uri🫣.",
-    image: "assets/amahereni3.jpg"
-  },
-  {
-    id: 13,
-    name: "jeans",
-    category: "impuzu",
-    price: 800,
-    stock: 100,
-    desc: "jeans nziza.",
-    image: "assets/jeans.jpg"
-  },
-  {
-    id: 14,
-    name: "boyfriend",
-    category: "impuzu",
-    price: 700,
-    stock: 80,
-    desc: Over size ya bien👌🏽.",
-    image: "assets/boyfriend.jpg"
-  },
-  {
-    id: 15,
-    name: "ikabutura",
-    category: "impuzu",
-    price: 1000,
-    stock: 90,
-    desc: "3/4 irenze.",
-    image: "assets/ikabutura.jpg"
-  },
-  {
-    id: 16,
-    name: "tissu",
-    category: "impuzu",
-    price: 3500,
-    stock: 18,
-    desc: "iyi tissu mumanza ni top.",
-    image: "assets/tissu.jpg"
-  },
-  {
-    id: 17,
-    name: "jacket",
-    category: "impuzu",
-    price: 4200,
-    stock: 15,
-    desc: "iyi jacket ni wanne.",
-    image: "assets/jacket.jpg"
-  },
-  {
-    id: 18,
-    name: "mallot",
-    category: "impuzu",
-    price: 1300,
-    stock: 50,
-    desc: "I mallot ifite quality ya bien kugiciro gito .",
-    image: "assets/mallot1.jpg"
-  },
-  {
-    id: 19,
-    name: "mallot z'abana",
-    category: "impuzu",
-    price: 2000,
-    stock: 40,
-    desc: "iyi mallot ni original .",
-    image: "assets/mallot2.jpg"
-  },
-  {
-    id: 20,
-    name: "amarori",
-    category: "lunettes",
-    price: 1700,
-    stock: 45,
-    desc: "iyi pair irasara.",
-    image: "assets/lunettes.jpg"
+    name: "Milk Fresh",
+    category: "amata",
+    price: 1200,
+    stock: 60,
+    desc: "Amata mashya",
+    image: "assets/milk.jpg"
   }
 ];
+
+// Override with localStorage if admin updated
+(function(){
+  const persisted = localStorage.getItem('jb_products_admin');
+  if (persisted) {
+    try {
+      window.JB_PRODUCTS = JSON.parse(persisted);
+    } catch(e) {
+      console.warn("Failed to parse persisted products:", e);
+    }
+  }
+})();
