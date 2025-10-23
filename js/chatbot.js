@@ -15,7 +15,7 @@ let romanticTone = localStorage.getItem('jb_romantic') === "true";
 sessions++;
 localStorage.setItem('jb_sessions_count', sessions);
 
-// Female names list (expand as needed)
+// Female names list
 const FEMALE_NAMES = ["aline","chantal","divine","gloria","sandrine","diane","florence","claudine","esther","marie","alice","sandra","chloe","sarah","nadine"];
 
 // Vocabulary banks
@@ -51,7 +51,7 @@ function renderMessage(sender, text) {
 
 // Bot reply with typing delay
 function botReply(text) {
-  setTimeout(() => renderMessage('bot', text), 600);
+  setTimeout(() => renderMessage('bot', text), 500);
 }
 
 // Ask name if not known
@@ -59,7 +59,7 @@ function askNameIfNeeded() {
   botReply("Ndakwinginze sha 🌸, nitwa JeuneBot. Wowe witwa gute?");
 }
 
-// Cart functions
+// === Cart functions ===
 function addToCart(id) {
   const item = JB_PRODUCTS.find(p => p.id == id);
   if (!item) return botReply("Nta product ifite ID iyo ibonetse 🌸");
@@ -97,7 +97,35 @@ function showCart() {
   }
 }
 
-// Handle messages
+// === Render results with images + highlight ===
+function renderResults(items, keyword){
+  if (!items.length){
+    return botReply(`Nta bicuruzwa bibonetse kuri "${keyword}" 🌸`);
+  }
+
+  function highlight(text, kw){
+    if(!kw) return text;
+    const regex = new RegExp(`(${kw})`, "gi");
+    return text.replace(regex, `<mark style="background:#ff6ec7;color:#fff;border-radius:3px;padding:0 2px;">$1</mark>`);
+  }
+
+  items.forEach(p => {
+    const msg = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="${p.image}" alt="${p.name}" 
+             style="width:60px;height:60px;object-fit:cover;border-radius:8px;">
+        <div>
+          <b>#${p.id} — ${highlight(p.name, keyword)}</b><br>
+          ${p.price} Fbu | stock: ${p.stock}<br>
+          <small>${highlight(p.desc, keyword)}</small>
+        </div>
+      </div>
+    `;
+    botReply(msg);
+  });
+}
+
+// === Handle messages ===
 function handleMessage(msg){
   const lower = msg.toLowerCase();
 
@@ -162,25 +190,41 @@ function handleMessage(msg){
     return showCart();
   }
 
-  // Categories
-  if(lower.includes("impuzu")){
-    const list = JB_PRODUCTS.filter(p => p.category === "impuzu");
-    return botReply("impuzu dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
+  // Flexible search: "ndashaka [keyword]" or "shaka [keyword]"
+  if(lower.startsWith("ndashaka ") || lower.startsWith("shaka ")){
+    const keyword = msg.split(" ").slice(1).join(" ").toLowerCase();
+    const results = JB_PRODUCTS.filter(p =>
+      p.name.toLowerCase().includes(keyword) ||
+      p.category.toLowerCase().includes(keyword) ||
+      p.desc.toLowerCase().includes(keyword)
+    );
+    return renderResults(results, keyword);
   }
-  if(lower.includes("ibirato")){
-    const list = JB_PRODUCTS.filter(p => p.category === "ibirato");
-    return botReply("Ibirato dufise: " + list.map(p => `${p.id}. ${p.name} (${p.price} Fbu)`).join(", "));
+
+  // Price filters
+  if(lower.includes("munsi ya")){
+    const n = parseInt(lower.replace(/\D+/g,''), 10);
+    const results = JB_PRODUCTS.filter(p => p.price < n);
+    return renderResults(results, `munsi ya ${n}`);
+  }
+  if(lower.includes("hejuru ya")){
+    const n = parseInt(lower.replace(/\D+/g,''), 10);
+    const results = JB_PRODUCTS.filter(p => p.price > n);
+    return renderResults(results, `hejuru ya ${n}`);
+  }
+
+  // 📂 Direct category search (e.g. "imbuto", "snacks", "isuku")
+  const catResults = JB_PRODUCTS.filter(p => p.category.toLowerCase() === lower);
+  if(catResults.length){
+    return renderResults(catResults, lower);
   }
 
   // Default fallback
   if(!userName){
     return askNameIfNeeded();
   }
-  return botReply("Ndakumva sha 🌸, ushobora kumbwira ibyo ushaka: impizu, ibirato, checkout…");
-}
-
-// Send message
-function sendMessage() {
+  return botReply("Ndakumva sha 🌸, ushobora kumbwira ibyo ushaka: ndashaka [izina], imbuto, snacks, munsi ya 2000, hejuru ya 3000, checkout…");
+}function sendMessage() {
   const text = chatInput.value.trim();
   if (!text) return;
   renderMessage('user', text);
