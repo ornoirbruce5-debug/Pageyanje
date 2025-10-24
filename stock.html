@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeune Boutique — Catalogue</title>
+  <link rel="stylesheet" href="css/stock.css">
+  <meta name="robots" content="index,follow">
+</head>
+<body class="stock-page">
+
+  <!-- Background -->
+  <div class="video-bg"></div>
+  <div class="page-overlay">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="logo">✨ Jeune Boutique</div>
+      <nav>
+        <a href="index.html">Ahabanza</a>
+        <a href="cart.html" class="floating-cart-link">🛒 Gare <span id="cartBadge">0</span></a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-intro">
+      <h1>Murakaza neza kuri Jeune Boutique</h1>
+      <p>Ibicuruzwa bishya, byiza kandi by’urubyiruko 💖</p>
+    </section>
+
+    <!-- Controls -->
+    <section class="stock-controls">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Shakisha igicuruzwa...">
+      <div class="filters">
+        <button class="filter-btn active" data-cat="all">Byose</button>
+        <button class="filter-btn" data-cat="amata">Amata</button>
+        <button class="filter-btn" data-cat="ibinyobwa">Ibinyobwa</button>
+        <button class="filter-btn" data-cat="impuzu">Impuzu</button>
+        <button class="filter-btn" data-cat="ibirato vyabahungu">Ibirato Boys</button>
+        <button class="filter-btn" data-cat="ibirato vy'abakobwa">Ibirato Girls</button>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products-grid" id="productsGrid"></section>
+
+    <!-- Chatbot -->
+    <section class="chatbot">
+      <h2>🤖 Chatbot</h2>
+      <div id="chatWindow" class="chat-window"></div>
+      <div class="chat-controls">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Andika ikibazo cyawe...">
+        <button id="chatSend" class="btn-primary">Ohereza</button>
+      </div>
+    </section>
+
+    <!-- WhatsApp -->
+    <section class="whatsapp-section">
+      <h2>📱 Twandikire kuri WhatsApp</h2>
+      <p>Kanda hano kugira ngo uduhamagare kuri WhatsApp:</p>
+      <a href="https://wa.me/25771633859" target="_blank" class="btn-primary">WhatsApp</a>
+      <div><img src="images/whatsapp-qr.jpg" alt="QR Code" class="qr-code"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Jeune Boutique — Byoroshye, Byiza, By’urubyiruko 💕</p>
+    </footer>
+
+    <!-- Floating Controls -->
+    <a href="cart.html" class="floating-cart">🛒 <span id="cartBadgeFloat">0</span></a>
+    <button class="dark-toggle" id="darkToggle">🌙/☀️</button>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script>
+    const CART_KEY = 'jb_cart';
+    const grid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const badge = document.getElementById('cartBadge');
+    const badgeFloat = document.getElementById('cartBadgeFloat');
+    let currentCat = 'all';
+
+    // Render catalogue
+    function renderProducts() {
+      grid.innerHTML = '';
+      const term = searchInput.value.toLowerCase();
+      const filtered = window.JB_PRODUCTS.filter(p => {
+        const matchCat = currentCat === 'all' || p.category === currentCat;
+        const matchSearch = p.name.toLowerCase().includes(term);
+        return matchCat && matchSearch;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty-state"><p>Nta bicuruzwa bibonetse 😢</p></div>';
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img class="card-img" src="${p.image}" alt="${p.name}">
+          <h3 class="card-title">${p.name}</h3>
+          <p class="card-desc">${p.desc}</p>
+          <div class="card-meta">
+            <span class="card-price">${p.price} Fbu</span>
+          </div>
+          <button class="btn-add"
+            data-id="${p.id}"
+            data-name="${p.name}"
+            data-price="${p.price}"
+            data-image="${p.image}"
+          >🛒 Ongeramo</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Add to cart
+    function addToCart(prod) {
+      const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      const existing = cart.find(i => i.id === prod.id);
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+      } else {
+        cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1, image: prod.image });
+      }
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      updateCartBadge();
+      alert(`${prod.name} yongewe mu gare 🛒`);
+    }
+
+    // Update badge
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      const count = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+      if (badge) badge.textContent = count;
+      if (badgeFloat) badgeFloat.textContent = count;
+    }
+
+    // Events
+    searchInput.addEventListener('input', renderProducts);
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
+        renderProducts();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.btn-add');
+      if (!btn) return;
+      const prod = {
+        id: parseInt(btn.dataset.id, 10),
+        name: btn.dataset.name,
+        price: parseInt(btn.dataset.price, 10),
+        image: btn.dataset.image
+      };
+      addToCart(prod);
+    });
+
+    // Dark mode toggle
+    document.getElementById('darkToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+    // Init
+    renderProducts();
+    updateCartBadge();
+  </script>
+</body>
+</html>
