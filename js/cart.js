@@ -1,9 +1,9 @@
-// cart.js — Jeune Boutique (final)
+// cart.js — Jeune Boutique
 
 const CART_KEY = 'jb_cart';
 
+// Elements
 const itemsEl = document.getElementById('cartItems');
-const clearBtn = document.getElementById('clearCart');
 const subtotalEl = document.getElementById('subtotal');
 const deliveryEl = document.getElementById('delivery');
 const totalEl = document.getElementById('total');
@@ -11,109 +11,86 @@ const zoneSel = document.getElementById('deliveryZone');
 const checkoutBtn = document.getElementById('checkoutBtn');
 const badgeEl = document.getElementById('cartBadge');
 const tpl = document.getElementById('cartItemTpl');
+const clearBtn = document.getElementById('clearCart');
 
-let cart = readCart();
+// State
+let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
-function readCart() {
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-  } catch (e) {
-    console.warn('Cart parse error:', e);
-    return [];
-  }
-}
-
+// Helpers
 function saveCart() {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
-
 function formatFbu(n) {
   return `${(n || 0).toLocaleString('en-US')} Fbu`;
 }
-
 function lineTotal(p) {
   return (p.price || 0) * (p.qty || 1);
 }
 
+// Render gare
 function render() {
   itemsEl.innerHTML = '';
+
   if (!cart.length) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.innerHTML = `
-      <p>Gare yawe iracyari ubusa 😌</p>
-      <p><a href="stock.html">Tangira guhitamo ibicuruzwa</a></p>
+    // Empty state with icon + message + back link
+    itemsEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🛍️</div>
+        <p>Gare yawe iracyari ubusa 😌</p>
+        <a href="stock.html" class="btn primary">⬅️ Subira kuri Catalogue</a>
+      </div>
     `;
-    itemsEl.appendChild(empty);
-    updateTotals();
+    // Totals and checkout
+    subtotalEl.textContent = formatFbu(0);
+    const deliveryCost = parseInt(zoneSel?.value || '0', 10) || 0;
+    deliveryEl.textContent = formatFbu(deliveryCost);
+    totalEl.textContent = formatFbu(deliveryCost);
     updateBadge();
     updateCheckoutLink();
     return;
   }
 
-  const frag = document.createDocumentFragment();
-
   cart.forEach((p, idx) => {
     const node = tpl.content.cloneNode(true);
-    const img = node.querySelector('.item-img');
-    const title = node.querySelector('.item-title');
-    const price = node.querySelector('.item-price');
-    const minus = node.querySelector('.qty.minus');
-    const plus = node.querySelector('.qty.plus');
-    const input = node.querySelector('.qty.input');
-    const removeBtn = node.querySelector('.btn.remove');
-    const lineT = node.querySelector('.line-total');
 
-    img.src = p.image || 'assets/placeholder.jpg';
-    img.alt = p.name || 'Product';
-    title.textContent = p.name || 'Izina ribuze';
-    price.textContent = formatFbu(p.price || 0);
-    input.value = p.qty || 1;
-    lineT.textContent = formatFbu(lineTotal(p));
+    node.querySelector('.item-img').src = p.image;
+    node.querySelector('.item-img').alt = p.name;
+    node.querySelector('.item-title').textContent = p.name;
+    node.querySelector('.item-price').textContent = formatFbu(p.price);
+    node.querySelector('.qty.input').value = p.qty;
+    node.querySelector('.line-total').textContent = formatFbu(lineTotal(p));
 
-    minus.addEventListener('click', () => {
-      const q = Math.max(1, (parseInt(input.value, 10) || 1) - 1);
-      input.value = q;
-      cart[idx].qty = q;
-      saveCart(); 
-      lineT.textContent = formatFbu(lineTotal(cart[idx]));
-      updateTotals(); updateBadge(); updateCheckoutLink();
+    // Qty controls
+    node.querySelector('.qty.minus').addEventListener('click', () => {
+      cart[idx].qty = Math.max(1, (cart[idx].qty || 1) - 1);
+      saveCart(); render();
     });
-
-    plus.addEventListener('click', () => {
-      const q = (parseInt(input.value, 10) || 1) + 1;
-      input.value = q;
-      cart[idx].qty = q;
-      saveCart(); 
-      lineT.textContent = formatFbu(lineTotal(cart[idx]));
-      updateTotals(); updateBadge(); updateCheckoutLink();
+    node.querySelector('.qty.plus').addEventListener('click', () => {
+      cart[idx].qty = (cart[idx].qty || 1) + 1;
+      saveCart(); render();
     });
-
-    input.addEventListener('input', () => {
-      let q = parseInt(input.value, 10);
+    node.querySelector('.qty.input').addEventListener('input', e => {
+      let q = parseInt(e.target.value, 10);
       if (isNaN(q) || q < 1) q = 1;
-      input.value = q;
       cart[idx].qty = q;
-      saveCart(); 
-      lineT.textContent = formatFbu(lineTotal(cart[idx]));
-      updateTotals(); updateBadge(); updateCheckoutLink();
+      saveCart(); render();
     });
 
-    removeBtn.addEventListener('click', () => {
+    // Remove
+    node.querySelector('.btn.remove').addEventListener('click', () => {
       cart.splice(idx, 1);
-      saveCart();
-      render(); // re-render list after removal
+      saveCart(); render();
     });
 
-    frag.appendChild(node);
+    itemsEl.appendChild(node);
   });
 
-  itemsEl.appendChild(frag);
   updateTotals();
   updateBadge();
   updateCheckoutLink();
 }
 
+// Totals
 function updateTotals() {
   const subtotal = cart.reduce((sum, p) => sum + lineTotal(p), 0);
   const delivery = parseInt(zoneSel?.value || '0', 10) || 0;
@@ -124,24 +101,36 @@ function updateTotals() {
   totalEl.textContent = formatFbu(total);
 }
 
+// Badge
 function updateBadge() {
   const count = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
   if (badgeEl) badgeEl.textContent = count;
 }
 
+// WhatsApp checkout link
 function updateCheckoutLink() {
-  // Build a WhatsApp message with cart summary
   if (!checkoutBtn) return;
-  if (!cart.length) {
-    checkoutBtn.href = 'https://wa.me/25771633859?text=Gare%20y%27ubusa%20%E2%9C%A8';
-    return;
-  }
-  const lines = cart.map(p => `${encodeURIComponent(p.name)}%20x${p.qty}%20(${encodeURIComponent(formatFbu(p.price))})`);
+
   const subtotal = cart.reduce((sum, p) => sum + lineTotal(p), 0);
   const delivery = parseInt(zoneSel?.value || '0', 10) || 0;
   const total = subtotal + delivery;
-  const msg = `Ndaguze:%0A- ${lines.join('%0A- ')}%0ASubtotal: ${encodeURIComponent(formatFbu(subtotal))}%0ADelivery: ${encodeURIComponent(formatFbu(delivery))}%0ATotal: ${encodeURIComponent(formatFbu(total))}`;
-  checkoutBtn.href = `https://wa.me/25771633859?text=${msg}`;
+
+  let msg;
+  if (!cart.length) {
+    msg = `Muraho! Gare iri ubusa. Ndasubiye kuri catalogue.`;
+  } else {
+    const lines = cart.map(p => `${p.name} x${p.qty} = ${formatFbu(lineTotal(p))}`);
+    msg = [
+      `Muraho neza! 😃`,
+      `Ibyo naguze kuri Jeune Boutique:`,
+      ...lines.map(l => `- ${l}`),
+      `Subtotal: ${formatFbu(subtotal)}`,
+      `Delivery: ${formatFbu(delivery)}`,
+      `Total: ${formatFbu(total)}`
+    ].join('\n');
+  }
+
+  checkoutBtn.href = `https://wa.me/25771633859?text=${encodeURIComponent(msg)}`;
 }
 
 // Clear cart
@@ -150,8 +139,9 @@ if (clearBtn) {
     if (!cart.length) return;
     if (confirm('Urashaka gusukura gare yose?')) {
       cart = [];
-      saveCart();
+      localStorage.removeItem(CART_KEY);
       render();
+      alert("Gare yasibwe neza 🧹");
     }
   });
 }
@@ -164,5 +154,5 @@ if (zoneSel) {
   });
 }
 
-// Initial render
+// Init
 render();
