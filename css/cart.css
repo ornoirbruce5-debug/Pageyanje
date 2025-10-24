@@ -1,0 +1,228 @@
+/* cart.css — Jeune Boutique */
+
+:root {
+  --bg: #f7f7fb;
+  --card: #ffffff;
+  --text: #222;
+  --muted: #666;
+  --primary: #ff4fa3;     /* pastel pink */
+  --primary-contrast: #fff;
+  --danger: #ea3d2f;
+  --border: #e8e8ef;
+  --shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body.cart-page {
+  margin: 0;
+  background: linear-gradient(180deg, #fff, var(--bg));
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+/* Header */
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.cart-header .subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn.primary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: transparent;
+}
+.btn.danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: transparent;
+}
+.btn.link {
+  background: transparent;
+  border-color: var(--border);
+}
+
+/* Main layout */
+.cart-main {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  padding: 20px;
+}
+.cart-items {
+  display: grid;
+  gap: 14px;
+}
+
+/* Item card */
+.item {
+  display: grid;
+  grid-template-columns: 96px 1fr 160px;
+  gap: 14px;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+.item-img {
+  width: 96px; height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.item-info .item-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+.item-info .item-price {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.qty.controls .qty { /* legacy guard */ }
+.qty.minus, .qty.plus {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+}
+.qty.input {
+  width: 64px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 0 10px;
+}
+
+/* Actions */
+.item-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  flex-direction: column;
+  gap: 10px;
+}
+.item-actions .line-total {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Summary */
+.cart-summary {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 84px;
+  height: fit-content;
+}
+.cart-summary h2 {
+  margin: 0 0 12px;
+}
+.cart-summary .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px dashed var(--border);
+}
+.cart-summary .row:first-of-type { border-top: none; }
+.cart-summary .row.total {
+  border-top: 2px solid var(--border);
+  font-size: 18px;
+}
+.cart-summary .delivery {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cart-summary select {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+}
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+.empty-state p {
+  margin: 8px 0;
+  color: var(--muted);
+}
+
+/* Footer + floating cart */
+.cart-footer {
+  padding: 20px;
+}
+.floating-cart {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-radius: 999px;
+  padding: 10px 14px;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  border: none;
+}
+.floating-cart span {
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .cart-main { grid-template-columns: 1fr; }
+  .cart-summary { position: static; }
+  .item { grid-template-columns: 80px 1fr; }
+  .item-actions { flex-direction: row; align-items: center; }
+}
